@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20141222022921) do
     t.string   "title"
     t.string   "body"
     t.tsvector "search_vector"
+    t.boolean  "published",     null: false
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end

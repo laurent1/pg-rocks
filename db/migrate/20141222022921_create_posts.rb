@@ -4,12 +4,18 @@ class CreatePosts < ActiveRecord::Migration
       t.string :title
       t.string :body
       t.column :search_vector, 'tsvector'
+      t.boolean :published, :null => false
 
       t.timestamps null: false
     end
 
     execute <<-EOS
       CREATE INDEX posts_search_idx ON posts USING gin(search_vector)
+    EOS
+
+    execute <<-EOS
+      CREATE UNIQUE INDEX posts_title_idx ON posts (lower(title))
+      WHERE published
     EOS
 
     execute <<-EOS

@@ -1,5 +1,10 @@
 class Post < ActiveRecord::Base
 
+  before_save do
+    self.published ||= false
+    true
+  end
+
   # for simple text. one field
   def self.search_title(query)
     conditions = <<-EOS
@@ -28,6 +33,16 @@ class Post < ActiveRecord::Base
     EOS
 
     where(conditions, query)
+  end
+
+  def self.search_sorted(query)
+    mapped_query = sanitize_sql_array ["to_tsquery('english', ?)", query]
+    conditions = "search_vector @@ #{mapped_query}"
+
+    # ts_rank or ts_rank_cd (covered density)
+    order = "ts_rank_cd(search_vector, #{mapped_query}) DESC"
+
+    where(conditions).order(order)
   end
 
 
