@@ -9,6 +9,10 @@ class CreatePosts < ActiveRecord::Migration
     end
 
     execute <<-EOS
+      CREATE INDEX posts_search_idx ON posts USING gin(search_vector)
+    EOS
+
+    execute <<-EOS
       CREATE TRIGGER posts_vector_update BEFORE INSERT OR UPDATE
       ON posts
       FOR EACH ROW EXECUTE PROCEDURE

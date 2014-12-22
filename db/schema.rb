@@ -24,4 +24,6 @@ ActiveRecord::Schema.define(version: 20141222022921) do
     t.datetime "updated_at",    null: false
   end
 
+  add_index "posts", ["search_vector"], name: "posts_search_idx", using: :gin
+
 end
