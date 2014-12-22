@@ -13,6 +13,10 @@ class CreatePosts < ActiveRecord::Migration
     EOS
 
     execute <<-EOS
+      DROP TRIGGER IF EXISTS posts_vector_update ON posts
+    EOS
+
+    execute <<-EOS
       CREATE TRIGGER posts_vector_update BEFORE INSERT OR UPDATE
       ON posts
       FOR EACH ROW EXECUTE PROCEDURE
