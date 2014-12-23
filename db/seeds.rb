@@ -12,9 +12,9 @@ Post.create!(:title => 'How Postgres is different from MySQL')
 Post.create!(:title => 'Tips for MySQL refugees')
 Post.create!(:title => 'TOP SECRET', :body => 'Postgres rocks')
 
-# if Comment.count == 0
-#   posts = Post.all
-#   Comment.create!(:post => posts.first)
-#   Comment.create!(:post => posts.second)
-#   Comment.create!(:post => posts.second)
-# end
+if Comment.count == 0
+  posts = Post.all
+  Comment.create!(:post => posts.first)
+  Comment.create!(:post => posts.second)
+  Comment.create!(:post => posts.second)
+end

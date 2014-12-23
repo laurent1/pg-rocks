@@ -45,5 +45,20 @@ class Post < ActiveRecord::Base
     where(conditions).order(order)
   end
 
+  # uses active records to get the posts columns into the group by
+  def self.popular
+    post_column_names = Post.column_names.map { |column_name|
+      "posts.#{column_name}"
+    }.join(', ')
+    find_by_sql <<-EOS
+      SELECT posts.*, count(comments.id) as comment_count
+      FROM posts
+      INNER JOIN comments ON comments.post_id = posts.id
+      GROUP BY #{post_column_names}, comments.post_id
+      ORDER BY comment_count DESC
+      LIMIT 5
+    EOS
+  end
+
 
 end
